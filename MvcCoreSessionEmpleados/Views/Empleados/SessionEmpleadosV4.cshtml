@@ -1,0 +1,49 @@
+﻿@model List<Empleado>
+
+<div class="container mt-4">
+
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h2 class="mb-0">Gestión de EMPLEADOSV4</h2>
+        </div>
+
+        <div class="card-body">
+
+            <div class="mb-3">
+                <a asp-controller="Empleados"
+                   asp-action="EmpleadosAlmacenadosV4"
+                   class="btn btn-success">
+                    ver EMPLEADOS ALMACENADOS en la v4
+                </a>
+            </div>
+
+            @if (ViewData["MENSAJE"] != null)
+            {
+                <div class="alert alert-info">
+                    @ViewData["MENSAJE"]
+                </div>
+            }
+
+            <ul class="list-group">
+                @foreach (Empleado empleado in Model)
+                {
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong>@empleado.Apellido</strong>
+                            <span class="text-muted">(@empleado.Oficio)</span>
+                        </div>
+
+                        <a asp-controller="Empleados"
+                           asp-action="SessionEmpleadosV4"
+                           asp-route-idempleado="@empleado.IdEmpleado"
+                           class="btn btn-outline-secondary btn-sm">
+                            Almacenar EMPLEADO
+                        </a>
+                    </li>
+                }
+            </ul>
+
+        </div>
+    </div>
+
+</div>
