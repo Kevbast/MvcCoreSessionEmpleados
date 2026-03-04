@@ -3,3 +3,6 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @* IMPLEMENTAMOS EXTENSIONS PARA USARLOS EN LAS DEMÁS CLASES SIN TENER QUE IMPORTARLO OTRA VEZ  *@
 @using MvcCoreSessionEmpleados.Extensions
+@* PARA LA MEMORYCACHE PODERLA UTILIZAR *@
+@using Microsoft.Extensions.Caching.Memory
+@inject IMemoryCache memoryCache;

@@ -10,6 +10,10 @@ builder.Services.AddControllersWithViews();
 //LO AÑADIMOS SIEMPRE QUE USEMOS SESSION
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession();
+
+//AHORA SÍ VAMOS A AÑADIR CACHE PERSONALIZADO
+builder.Services.AddMemoryCache();
+
 //LO AÑADIMOS PARA EL REPO
 builder.Services.AddTransient<RepositoryEmpleados>();
 

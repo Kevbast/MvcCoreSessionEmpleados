@@ -1,0 +1,164 @@
+﻿@* //para recuperar el cache a través de una inyección*@
+@* @using Microsoft.Extensions.Caching.Memory
+@inject IMemoryCache memoryCache; *@
+
+@model List<Empleado>
+@{
+    //NECESITAMOS SESSION EN LA VISTA PARA COMPROBAR SUS DATOS
+    List<int> ids = Context.Session.GetObject<List<int>>("IDSEMPLEADOS");//IDESEMPLEADOS MIRAR BIEN EL SESSION
+
+    //PARA LA LISTA DE EMPLEADOS FAVORITOS
+    List<Empleado> empleadosFav = memoryCache.Get<List<Empleado>>("FAVORITOS"); //SI ESTÁ IMPORTADO GLOBALMENTE SE QUITARÍA EL THIS
+}
+
+<div class="container mt-4">
+
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h2 style="background-color:blueviolet" class="mb-0">Gestión de EMPLEADOSV5</h2>
+        </div>
+        
+        @if (ids != null)
+        {
+            <h3>EMPLEADOS EN SESSION: @ids.Count</h3>
+        }
+        else
+        {
+            <h2>Empleados en session:0</h2>
+        }
+
+        <div class="card-body">
+
+            <div class="mb-3">
+                <a asp-controller="Empleados"
+                   asp-action="EmpleadosAlmacenadosV5"
+                   class="btn btn-success">
+                    VER EMPLEADOS ALMACENADO EN LA V5
+                </a>
+            </div>
+
+            <div class="mb-3">
+                <a asp-controller="Empleados"
+                   asp-action="EmpleadosFavoritos">
+                    VER EMPLEADOS FAVORITOS
+                </a>
+            </div>
+
+            @if (ViewData["MENSAJE"] != null)
+            {
+                <div class="alert alert-info">
+                    @ViewData["MENSAJE"]
+                </div>
+            }
+
+            <ul class="list-group">
+                @foreach (Empleado empleado in Model)
+                {
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+
+                        <div>
+                            <strong>@empleado.Apellido</strong>
+                            <span class="text-muted">(@empleado.Oficio)</span>
+                        </div>
+                        @*PARA TOCAR LO DEL CACHE NUEVO BOTON FAVORITO*@
+                        <a asp-controller="Empleados"
+                           asp-action="SessionEmpleadosV5"
+                           asp-route-idfavorito="@empleado.IdEmpleado"
+                           class="btn btn-outline-primary btn-sm">
+                            favorito
+                        </a>
+                        @*AQUI PREGUNTAMOS SI EXISTE O NO EXISTE EL EMPLEADO EN SESSION*@
+                        @if (ids == null)
+                        {
+                            <a asp-controller="Empleados"
+                               asp-action="SessionEmpleadosV5"
+                               asp-route-idempleado="@empleado.IdEmpleado"
+                               class="btn btn-outline-secondary btn-sm">
+                                Almacenar EMPLEADO
+                            </a>
+                        }
+                        else
+                        {
+                            //BUSCAMOS SI EL EMPLEADO QUE ESTAMOS RECORRIENDO ESTÁ EN LA LISTA
+                            if (ids.Contains(empleado.IdEmpleado))
+                            {
+                            <img src="~/images/silksong.jpg" style="width:100px;height:100px"/>
+                                <p>YA ESTÁ ALMACENADO</p>
+                            }
+                            else
+                            {
+                                <a asp-controller="Empleados"
+                                   asp-action="SessionEmpleadosV5"
+                                   asp-route-idempleado="@empleado.IdEmpleado"
+                                   class="btn btn-outline-secondary btn-sm">
+                                    Almacenar EMPLEADO
+                                </a>  
+                            }
+                        }
+
+                    </li>
+                }
+            </ul>
+
+        </div>
+    </div>
+    <div>
+        @if (empleadosFav!=null)
+        {
+            <ul class="list-group">
+                <H2>EMPLEADOS FAVORITOS</H2>
+                @foreach (Empleado empleado in empleadosFav)
+                {
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+
+                        <div>
+                            <strong>@empleado.Apellido</strong>
+                            <span class="text-muted">(@empleado.Oficio)</span>
+                        </div>
+                        @*PARA TOCAR LO DEL CACHE NUEVO BOTON FAVORITO*@
+                        <a asp-controller="Empleados"
+                           asp-action="SessionEmpleadosV5"
+                           asp-route-idfavorito="@empleado.IdEmpleado"
+                           class="btn btn-outline-primary btn-sm">
+                            favorito
+                        </a>
+                        @*AQUI PREGUNTAMOS SI EXISTE O NO EXISTE EL EMPLEADO EN SESSION*@
+                        @if (ids == null)
+                        {
+                            <a asp-controller="Empleados"
+                               asp-action="SessionEmpleadosV5"
+                               asp-route-idempleado="@empleado.IdEmpleado"
+                               class="btn btn-outline-secondary btn-sm">
+                                Almacenar EMPLEADO
+                            </a>
+                        }
+                        else
+                        {
+                            //BUSCAMOS SI EL EMPLEADO QUE ESTAMOS RECORRIENDO ESTÁ EN LA LISTA
+                            if (ids.Contains(empleado.IdEmpleado))
+                            {
+                                <img src="~/images/silksong.jpg" style="width:100px;height:100px" />
+                                <p>YA ESTÁ ALMACENADO</p>
+                            }
+                            else
+                            {
+                                <a asp-controller="Empleados"
+                                   asp-action="SessionEmpleadosV5"
+                                   asp-route-idempleado="@empleado.IdEmpleado"
+                                   class="btn btn-outline-secondary btn-sm">
+                                    Almacenar EMPLEADO
+                                </a>
+                            }
+                        }
+
+                    </li>
+                }
+            </ul>
+        }
+        else
+        {
+            <h2 style="color:blue">NO TIENES EMPLEADOS FAVORITOS</h2>
+        }
+
+    </div>
+</div>

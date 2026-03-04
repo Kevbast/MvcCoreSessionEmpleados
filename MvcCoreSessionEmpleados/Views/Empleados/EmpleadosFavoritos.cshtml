@@ -1,0 +1,47 @@
+﻿
+@{
+
+    //PARA LA LISTA DE EMPLEADOS FAVORITOS
+    List<Empleado> empleadosFav = memoryCache.Get<List<Empleado>>("FAVORITOS"); //SI ESTÁ IMPORTADO GLOBALMENTE SE QUITARÍA EL THIS
+}
+<h1 style="color:green">
+    Empleados FAVORITOS DE LA V5
+</h1>
+<p>
+    <a asp-controller="Empleados"
+       asp-action="SessionEmpleadosV5">
+        Volver a empleados V5
+    </a>
+</p>
+
+@if (empleadosFav != null)
+{
+    <table class="table table-warning">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Apellido</th>
+                <th>Oficio</th>
+                <th>Salario</th>
+                <th>Departamento</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in empleadosFav)
+            {
+                <tr>
+                    <td>@item.IdEmpleado</td>
+                    <td>@item.Apellido</td>
+                    <td>@item.Oficio</td>
+                    <td>@item.Salario</td>
+                    <td>@item.IdDepartamento</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <h1 style="color:purple">NO HAY EMPLEADOS FAVORITOS</h1>
+}
