@@ -271,9 +271,10 @@ Debemos hacer esta consulta en el caso que tengamos Session.
         }
 
         //nos creamos un nuevo método para ver los favoritos
-        public IActionResult EmpleadosFavoritos()
+        public IActionResult EmpleadosFavoritos(int? ideliminar)
         {
-            /*if (this.memoryCache.Get("FAVORITOS") == null)
+            //ya no usamos esto puesto que tenemos el ImemoryCache
+            /*if (this.memoryCache.Get("FAVORITOS") == null) 
             {
                 ViewData["MENSAJE"] = "NO HAY EMPLEADOS FAVORITOS";
                 return View();
@@ -283,6 +284,25 @@ Debemos hacer esta consulta en el caso que tengamos Session.
                 List<Empleado> favoritos = this.memoryCache.Get<List<Empleado>>("FAVORITOS");
                 return View(favoritos);
             }*/
+
+            if (ideliminar != null)
+            {
+                List<Empleado> empleadosFavoritos = this.memoryCache.Get<List<Empleado>>("FAVORITOS");
+                //Buscamos al empleado a ELIMINAR CON SU ID
+                Empleado delete = empleadosFavoritos.Find(i => i.IdEmpleado == ideliminar.Value);
+                empleadosFavoritos.Remove(delete);
+
+                if (empleadosFavoritos.Count == 0)
+                {
+                    this.memoryCache.Remove("FAVORITOS");
+                }
+                else
+                {
+                    this.memoryCache.Set("FAVORITOS", empleadosFavoritos);
+                }
+
+            }
+
 
             return View();
         }

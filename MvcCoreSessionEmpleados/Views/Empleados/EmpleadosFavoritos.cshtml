@@ -36,6 +36,13 @@
                     <td>@item.Oficio</td>
                     <td>@item.Salario</td>
                     <td>@item.IdDepartamento</td>
+                    <td>
+                        <a asp-controller="Empleados"
+                           asp-action="EmpleadosFavoritos"
+                           asp-route-ideliminar="@item.IdEmpleado" class="btn btn-warning">
+                            Eliminar de la lista de favoritos
+                        </a>
+                    </td>
                 </tr>
             }
         </tbody>
