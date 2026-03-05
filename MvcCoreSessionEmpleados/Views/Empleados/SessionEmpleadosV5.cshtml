@@ -61,12 +61,43 @@
                             <span class="text-muted">(@empleado.Oficio)</span>
                         </div>
                         @*PARA TOCAR LO DEL CACHE NUEVO BOTON FAVORITO*@
-                        <a asp-controller="Empleados"
+                        @* <a asp-controller="Empleados"
                            asp-action="SessionEmpleadosV5"
                            asp-route-idfavorito="@empleado.IdEmpleado"
                            class="btn btn-outline-primary btn-sm">
                             favorito
-                        </a>
+                        </a> *@
+                        @if (empleadosFav == null)
+                        {
+                            <a asp-controller="Empleados"
+                               asp-action="SessionEmpleadosV5"
+                               asp-route-idfavorito="@empleado.IdEmpleado"
+                               class="btn btn-outline-primary btn-sm">
+                                favorito
+                            </a>
+                        }
+                        else
+                        {
+                            //DEBEMOS PREGUNTAR SI EXISTE EL EMPLEADO CON EL ID QUE TENEMOS ALMACENADO
+                            //BUSCAMOS DENTRO SI ESTÁ NUESTRO EMPLEADO FAVORITO
+
+                            Empleado empFavorito = empleadosFav.Find(z => z.IdEmpleado == empleado.IdEmpleado);
+                            if (empFavorito == null)
+                            {
+                                <a asp-controller="Empleados"
+                                   asp-action="SessionEmpleadosV5"
+                                   asp-route-idfavorito="@empleado.IdEmpleado"
+                                   class="btn btn-outline-primary btn-sm">
+                                    favorito
+                                </a>
+                            }
+                            else
+                            {
+                                <img src="~/images/okko.jpg" style="width:80px;height:80px" />
+                            }
+                        }
+
+
                         @*AQUI PREGUNTAMOS SI EXISTE O NO EXISTE EL EMPLEADO EN SESSION*@
                         @if (ids == null)
                         {

@@ -1,4 +1,13 @@
-﻿<!DOCTYPE html>
+﻿@*vamos a implementarlo en el layout para que se vea que tenemos el control*@
+@{
+    //NECESITAMOS SESSION EN LA VISTA PARA COMPROBAR SUS DATOS
+    List<int> ids = Context.Session.GetObject<List<int>>("IDSEMPLEADOS");//IDESEMPLEADOS MIRAR BIEN EL SESSION
+
+    //PARA LA LISTA DE EMPLEADOS FAVORITOS
+    List<Empleado> empleadosFav = memoryCache.Get<List<Empleado>>("FAVORITOS"); //SI ESTÁ IMPORTADO GLOBALMENTE SE QUITARÍA EL THIS
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -29,6 +38,30 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Empleados" asp-action="Index">Empleados</a>
                         </li>
+                        <li>
+                            @if (ids != null)
+                            {
+                                <h6 style="background-color:orangered"> Compras: @ids.Count</h6>
+                            }
+                            else
+                            {
+                                
+                                <h6 style="background-color:orangered"> Compras: 0</h6>
+                            }
+
+                        </li>
+                        <li>
+                            @if (empleadosFav != null)
+                            {
+                                <h6 style="background-color:darkred"> Favoritos: @empleadosFav.Count</h6>
+
+                            }
+                            else
+                            {
+                                <h6 style="background-color:darkred"> Favoritos: 0</h6>
+                            }
+                        </li>
+    
                     </ul>
                 </div>
             </div>
